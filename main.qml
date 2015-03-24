@@ -14,7 +14,7 @@ ApplicationWindow {
 
         Text {
             id: caption
-            text: "Here be some pictures!"
+            text: imageChanges.current_image
             font.pointSize: 12
         }
 
@@ -27,7 +27,6 @@ ApplicationWindow {
                 id: currentImage
                 width: mainWindow.width - 5
                 height: 500
-                anchors.verticalCenter: parent.verticalCenter
                 source: imageChanges.change()
                 asynchronous: true
                 fillMode: Image.PreserveAspectFit
