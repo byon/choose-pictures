@@ -1,5 +1,7 @@
 import QtQuick 2.2
 import QtQuick.Controls 1.1
+import QtQuick.Layouts 1.1
+import Prototype 1.0
 
 ApplicationWindow {
     visible: true
@@ -8,20 +10,31 @@ ApplicationWindow {
     height: 600
     title: "Pics, man, pics!"
 
-    Text {
+    ColumnLayout {
 
-        id: caption
-        text: "Here be some pictures!"
-        y: 5
-        anchors.horizontalCenter: parent.horizontalCenter
-        font.pointSize: 12
+        Text {
+            id: caption
+            text: "Here be some pictures!"
+            y: 5
+            anchors.horizontalCenter: parent.horizontalCenter
+            font.pointSize: 12
+        }
+
+        Image {
+            id: currentImage
+            source: "data/pic1.jpg"
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.horizontalCenter: parent.horizontalCenter
+            asynchronous: true
+        }
+
+        Button {
+            text: 'Change'
+            onClicked: currentImage.source = imageChanges.change()
+        }
     }
 
-    Image {
-        id: currentImage
-        source: "data/pic2.jpg"
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.horizontalCenter: parent.horizontalCenter
-        asynchronous: true
+    ImageChanges {
+        id: imageChanges
     }
 }
