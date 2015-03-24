@@ -3,7 +3,18 @@ import QtQuick.Controls 1.1
 
 ApplicationWindow {
     visible: true
-    width: 200
-    height: 100
+    id: mainWindow
+    width: 320
+    height: 400
     title: "Hello, world!"
+
+    Text {
+
+        id: helloText
+        text: "Hello world again!"
+        y: 20
+        anchors.horizontalCenter: mainWindow.horizontalCenter
+        font.pointSize: 14
+        font.bold: true
+    }
 }
