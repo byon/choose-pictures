@@ -6,36 +6,55 @@ import Prototype 1.0
 ApplicationWindow {
     visible: true
     id: mainWindow
-    width: 640
-    height: 600
+    width: 1024
+    height: 680
     title: "Pics, man, pics!"
 
-    ColumnLayout {
+    RowLayout {
 
-        Text {
-            id: caption
-            text: imageChanges.current_image
-            font.pointSize: 12
-        }
+        id: mainRow
 
-        MouseArea {
+        Column {
 
-            width: currentImage.width
-            height: currentImage.width
+            id: currentImageColumn
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            width: currentImage.width + 10
+
+            Row {
+
+                id: previousNextButtonsRow
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                Button {
+                    id: previousImage; text: 'Previous'
+                }
+                Button {
+                    id: nextImage; text: 'Next'
+                    onClicked: {
+                        imageChanges.change()
+                        currentImage.source = imageChanges.current_image
+                    }
+                }
+            }
 
             Image {
+
                 id: currentImage
-                width: mainWindow.width - 5
-                height: 500
+                width: 600
                 source: imageChanges.change()
                 asynchronous: true
                 fillMode: Image.PreserveAspectFit
             }
+        }
 
-            onClicked: {
-                imageChanges.change()
-                currentImage.source = imageChanges.current_image
-            }
+        Button {
+            id: selectUnselect
+            text: 'Select'
+        }
+
+        Column {
         }
     }
 
