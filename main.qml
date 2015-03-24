@@ -22,7 +22,7 @@ ApplicationWindow {
 
         Image {
             id: currentImage
-            source: "data/pic1.jpg"
+            source: ""
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
             asynchronous: true
