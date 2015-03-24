@@ -11,12 +11,23 @@ module Prototype
 
     def initialize
       super
-      @current_id = 1
+      @images = next_image
     end
 
     def change
-      @current_id = @current_id == 1 ? 2 : 1
-      "data/pic#{@current_id}.jpg"
+      @images.resume
+    end
+
+    private
+
+    def next_image
+      Fiber.new do
+        loop do
+          Dir.glob('data/*.jpg') do |image|
+            Fiber.yield image
+          end
+        end
+      end
     end
   end
 end
