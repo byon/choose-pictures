@@ -15,22 +15,28 @@ ApplicationWindow {
         Text {
             id: caption
             text: "Here be some pictures!"
-            y: 5
-            anchors.horizontalCenter: parent.horizontalCenter
             font.pointSize: 12
         }
 
-        Image {
-            id: currentImage
-            source: ""
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.horizontalCenter: parent.horizontalCenter
-            asynchronous: true
-        }
+        MouseArea {
 
-        Button {
-            text: 'Change'
-            onClicked: currentImage.source = imageChanges.change()
+            width: currentImage.width
+            height: currentImage.width
+
+            Image {
+                id: currentImage
+                width: mainWindow.width - 5
+                height: 500
+                anchors.verticalCenter: parent.verticalCenter
+                source: imageChanges.change()
+                asynchronous: true
+                fillMode: Image.PreserveAspectFit
+            }
+
+            onClicked: {
+                imageChanges.change()
+                currentImage.source = imageChanges.current_image
+            }
         }
     }
 

@@ -9,13 +9,16 @@ module Prototype
     include QML::Access
     register_to_qml under: 'Prototype', version: '1.0'
 
+    property :current_image, ''
+
     def initialize
       super
       @images = next_image
+      change
     end
 
     def change
-      @images.resume
+      self.current_image = @images.resume
     end
 
     private
