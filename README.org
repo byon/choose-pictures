@@ -1,0 +1,3 @@
+Tool for selecting pictures, e.g. for the purposes of sending them for printing. Currently the implementation contains only a visual prototype without real functionality. The selected pictures are shown on screen, but there is no way to access them.
+
+The motivation for the project is to learn about Ruby, QT, and yet more about test automation. Hopefully the tool itself will be handy as well, but most likely there are tons of existing tools already available.
