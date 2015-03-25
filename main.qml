@@ -52,13 +52,27 @@ ApplicationWindow {
         Button {
             id: selectUnselect
             text: 'Select'
+            onClicked: {
+                selectedImagesModel.append({"name": imageChanges.current_image})
+            }
         }
 
-        Column {
+        ListView {
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.left: selectUnselect.right
+            id: selectedImagesView
+            model: selectedImagesModel
+            delegate: Text { text: name }
         }
     }
 
     ImageChanges {
         id: imageChanges
+    }
+
+    ListModel {
+        id: selectedImagesModel
     }
 }
