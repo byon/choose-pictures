@@ -26,7 +26,7 @@ module Prototype
     def next_image
       Fiber.new do
         loop do
-          Dir.glob('data/*') do |image|
+          Dir.glob('data/*').sort.each do |image|
             next if image !~ /\.jpg/i
             Fiber.yield File.join(Dir.pwd, image)
           end
