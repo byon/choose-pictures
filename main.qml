@@ -17,6 +17,7 @@ ApplicationWindow {
         focus: true
 
         Keys.onRightPressed: selectUnselect.clicked()
+        Keys.onUpPressed: previousImage.clicked()
         Keys.onDownPressed: nextImage.clicked()
 
         ColumnLayout {
@@ -34,12 +35,16 @@ ApplicationWindow {
 
                 Button {
                     id: previousImage; text: 'Previous'
+                    onClicked: {
+                        imageChanges.previous_image()
+                        currentImage.source = imageChanges.current_image()
+                    }
                 }
                 Button {
                     id: nextImage; text: 'Next'
                     onClicked: {
-                        imageChanges.change()
-                        currentImage.source = imageChanges.current_image
+                        imageChanges.next_image()
+                        currentImage.source = imageChanges.current_image()
                     }
                 }
             }
@@ -53,7 +58,7 @@ ApplicationWindow {
                 anchors.bottom: parent.bottom
                 Layout.maximumWidth: 1024
                 Layout.maximumHeight: 680
-                source: imageChanges.change()
+                source: imageChanges.current_image()
                 asynchronous: true
                 fillMode: Image.PreserveAspectFit
             }
@@ -65,7 +70,7 @@ ApplicationWindow {
             anchors.left: currentImageColumn.right
             onClicked: {
                 selectedImagesModel.append(
-                {"imagePath": imageChanges.current_image})
+                {"imagePath": imageChanges.current_image()})
                 selectedImagesView.currentIndex = selectedImagesView.count - 1
             }
         }

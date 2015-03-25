@@ -9,29 +9,40 @@ module Prototype
     include QML::Access
     register_to_qml under: 'Prototype', version: '1.0'
 
-    property :current_image, ''
-
     def initialize
       super
-      @images = next_image
-      change
+      @images = image_paths
+      @current = 0
+      @current_image = @images[@current]
     end
 
-    def change
-      self.current_image = @images.resume
+    def next_image
+      return unless next?
+      @current += 1
+    end
+
+    def previous_image
+      return unless previous?
+      @current -= 1
+    end
+
+    def current_image
+      @images[@current]
+    end
+
+    def next?
+      @current < @images.length - 1
+    end
+
+    def previous?
+      @current > 0
     end
 
     private
 
-    def next_image
-      Fiber.new do
-        loop do
-          Dir.glob('data/*').sort.each do |image|
-            next if image !~ /\.jpg/i
-            Fiber.yield File.join(Dir.pwd, image)
-          end
-        end
-      end
+    def image_paths
+      matches = Dir.glob('data/*').sort.select { |i| i =~ /\.jpg/i }
+      matches.map { |i| File.join(Dir.pwd, i) }
     end
   end
 end
