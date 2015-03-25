@@ -14,6 +14,10 @@ ApplicationWindow {
 
         id: mainRow
         anchors.fill: parent
+        focus: true
+
+        Keys.onRightPressed: selectUnselect.clicked()
+        Keys.onDownPressed: nextImage.clicked()
 
         ColumnLayout {
 
