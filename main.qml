@@ -60,8 +60,9 @@ ApplicationWindow {
             text: 'Select'
             anchors.left: currentImageColumn.right
             onClicked: {
-                selectedImagesModel.append( {
-                    "imagePath": imageChanges.current_image } )
+                selectedImagesModel.append(
+                {"imagePath": imageChanges.current_image})
+                selectedImagesView.currentIndex = selectedImagesView.count - 1
             }
         }
 
