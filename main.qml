@@ -76,6 +76,7 @@ ApplicationWindow {
 
             ListView {
                 id: selectedImagesView
+                spacing: 5
                 model: selectedImagesModel
                 delegate: Image {
                     source: imagePath
