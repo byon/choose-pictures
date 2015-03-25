@@ -13,6 +13,7 @@ ApplicationWindow {
     RowLayout {
 
         id: mainRow
+        anchors.fill: parent
 
         Column {
 
@@ -57,14 +58,20 @@ ApplicationWindow {
             }
         }
 
-        ListView {
+        ScrollView {
+
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.bottom: parent.bottom
             anchors.left: selectUnselect.right
-            id: selectedImagesView
-            model: selectedImagesModel
-            delegate: Text { text: name }
+            frameVisible: true
+            highlightOnFocus: true
+
+            ListView {
+                id: selectedImagesView
+                model: selectedImagesModel
+                delegate: Text { text: name }
+            }
         }
     }
 
