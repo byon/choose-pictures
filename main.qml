@@ -15,13 +15,13 @@ ApplicationWindow {
         id: mainRow
         anchors.fill: parent
 
-        Column {
+        ColumnLayout {
 
             id: currentImageColumn
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.bottom: parent.bottom
-            width: currentImage.width + 10
+            anchors.right: selectUnselect.left
 
             Row {
 
@@ -43,7 +43,12 @@ ApplicationWindow {
             Image {
 
                 id: currentImage
-                width: 600
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.top: previousNextButtonsRow.bottom
+                anchors.bottom: parent.bottom
+                Layout.maximumWidth: 1024
+                Layout.maximumHeight: 680
                 source: imageChanges.change()
                 asynchronous: true
                 fillMode: Image.PreserveAspectFit
