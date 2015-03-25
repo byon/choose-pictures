@@ -21,7 +21,7 @@ ApplicationWindow {
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.bottom: parent.bottom
-            anchors.right: selectUnselect.left
+            Layout.preferredWidth: 3 * (parent.width / 4)
 
             Row {
 
@@ -58,8 +58,10 @@ ApplicationWindow {
         Button {
             id: selectUnselect
             text: 'Select'
+            anchors.left: currentImageColumn.right
             onClicked: {
-                selectedImagesModel.append({"name": imageChanges.current_image})
+                selectedImagesModel.append( {
+                    "imagePath": imageChanges.current_image } )
             }
         }
 
@@ -75,7 +77,13 @@ ApplicationWindow {
             ListView {
                 id: selectedImagesView
                 model: selectedImagesModel
-                delegate: Text { text: name }
+                delegate: Image {
+                    source: imagePath
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    asynchronous: true
+                    fillMode: Image.PreserveAspectFit
+                }
             }
         }
     }
