@@ -48,5 +48,5 @@ module Prototype
 end
 
 QML.run do |app|
-  app.load_path Pathname(__FILE__) + '../main.qml'
+  app.load_path Pathname(__FILE__) + '../prototype.qml'
 end
