@@ -7,7 +7,7 @@ ApplicationWindow {
     visible: true
     id: mainWindow
     width: 1024
-    height: 680
+    height: 768
     title: "Pics, man, pics!"
 
     RowLayout {
@@ -58,6 +58,8 @@ ApplicationWindow {
                 anchors.bottom: parent.bottom
                 Layout.maximumWidth: 1024
                 Layout.maximumHeight: 680
+                sourceSize.width: 1024
+                sourceSize.height: 680
                 source: imageChanges.current_image()
                 asynchronous: true
                 fillMode: Image.PreserveAspectFit
@@ -92,7 +94,9 @@ ApplicationWindow {
                     source: imagePath
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    asynchronous: true
+                    cache: false
+                    sourceSize.width: 512
+                    sourceSize.height: 512
                     fillMode: Image.PreserveAspectFit
                 }
             }
