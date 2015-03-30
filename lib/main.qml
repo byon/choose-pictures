@@ -2,6 +2,7 @@ import QtQuick 2.2
 import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.0
+import ChoosePictures 1.0
 
 ApplicationWindow {
     visible: true
@@ -10,7 +11,24 @@ ApplicationWindow {
     height: 768
     title: "Choose Pictures"
 
+    function setDirectoryFromUrl(url) {
+        setDirectory(urlToPath(url))
+    }
+
+    function setDirectory(path) {
+        chosenDirectory.text = path
+        choosePictures.use_directory(path)
+        currentPicture.source = choosePictures.current_picture()
+    }
+
+    function urlToPath(url) {
+        var path = url.toString()
+        return decodeURIComponent(path.replace(/^\w+:\/{2}/, ""))
+    }
+
     RowLayout {
+
+        id: directoryRow
         anchors.left: parent.left
         anchors.top: parent.top
         anchors.right: parent.right
@@ -45,14 +63,33 @@ ApplicationWindow {
         }
     }
 
+    RowLayout {
+
+        id: pictureRow
+        anchors.left: parent.left
+        anchors.top: directoryRow.bottom
+        anchors.bottom: parent.bottom
+        anchors.right: parent.right
+
+        Image {
+
+            id: currentPicture
+            anchors.fill: parent
+            fillMode: Image.PreserveAspectFit
+        }
+    }
+
     FileDialog {
         id: fileDialog
         title: "Please choose a directory"
         nameFilters: [ "Image files (*.jpg *.jpeg *.png) *.JPG *.JPEG *.PNG",
                        "All files (*)" ]
         selectFolder: true
-        onAccepted: {
-            chosenDirectory.text = fileDialog.fileUrl
-        }
+        onAccepted: mainWindow.setDirectoryFromUrl(fileDialog.fileUrl)
+    }
+
+    ChoosePictures {
+
+        id: choosePictures
     }
 }
