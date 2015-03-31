@@ -15,6 +15,12 @@ RSpec.describe PicturesFromDirectory, 'construction' do
     expect { PicturesFromDirectory.new('-') }
       .to raise_error '"-" does not exist'
   end
+
+  it 'should look for any files from the directory' do
+    glob = expect_directory_glob
+    PicturesFromDirectory.new('.')
+    glob.valid?
+  end
 end
 
 RSpec.describe PicturesFromDirectory, 'empty directory' do
@@ -184,4 +190,10 @@ end
 
 def mock_directory_glob(result)
   allow(Dir).to receive(:glob).and_return(result)
+end
+
+def expect_directory_glob
+  glob = double.as_null_object
+  expect(Dir).to receive(:glob).with('./*') { glob }
+  glob
 end
