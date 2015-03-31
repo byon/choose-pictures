@@ -35,6 +35,10 @@ class ChoosePictures
     @pictures.last_picture
   end
 
+  # Temporarily disabling a few style warnings from Rubocop. The
+  # normal method names for getters (e.g., previous? and next?) are
+  # not valid code in QML.
+  # rubocop:disable Style/PredicateName
   def has_previous
     @pictures.previous?
   end
@@ -42,6 +46,7 @@ class ChoosePictures
   def has_next
     @pictures.next?
   end
+  # rubocop:enable Style/PredicateName
 
   def allowed_extensions
     ALL_EXTENSIONS.map { |e| '*.' + e }.join(' ')
