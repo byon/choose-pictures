@@ -14,11 +14,21 @@ class PicturesFromDirectory
   end
 
   def previous_picture
+    return unless previous?
     @current -= 1
   end
 
   def next_picture
+    return unless next?
     @current += 1
+  end
+
+  def previous?
+    @current > 0
+  end
+
+  def next?
+    @current + 1 < @pictures.length
   end
 
   private

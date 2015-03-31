@@ -14,11 +14,19 @@ ApplicationWindow {
     function moveToPrevious() {
         choosePictures.previous_picture()
         currentPicture.source = choosePictures.current_picture()
+        updateNextAndPreviousButtons()
     }
 
     function moveToNext() {
         choosePictures.next_picture()
         currentPicture.source = choosePictures.current_picture()
+        updateNextAndPreviousButtons()
+    }
+
+    function updateNextAndPreviousButtons() {
+
+        previousPictureButton.enabled = choosePictures.has_previous()
+        nextPictureButton.enabled = choosePictures.has_next()
     }
 
     function setDirectoryFromUrl(url) {
@@ -29,6 +37,7 @@ ApplicationWindow {
         chosenDirectory.text = path
         choosePictures.use_directory(path)
         currentPicture.source = choosePictures.current_picture()
+        updateNextAndPreviousButtons()
     }
 
     function urlToPath(url) {
@@ -82,8 +91,8 @@ ApplicationWindow {
         anchors.right: parent.right
         focus:true
 
-        Keys.onDownPressed: nextPicture.clicked()
-        Keys.onUpPressed: previousPicture.clicked()
+        Keys.onDownPressed: nextPictureButton.clicked()
+        Keys.onUpPressed: previousPictureButton.clicked()
 
         ColumnLayout {
 
@@ -96,15 +105,17 @@ ApplicationWindow {
                 anchors.horizontalCenter: parent.horizontalCenter
 
                 Button {
-                    id: previousPicture
+                    id: previousPictureButton
                     text: 'Previous'
                     onClicked: mainWindow.moveToPrevious()
+                    enabled: false
                 }
 
                 Button {
-                    id: nextPicture
+                    id: nextPictureButton
                     text: 'Next'
                     onClicked: mainWindow.moveToNext()
+                    enabled: false
                 }
             }
 

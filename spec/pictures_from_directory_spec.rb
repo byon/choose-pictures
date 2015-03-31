@@ -26,6 +26,14 @@ RSpec.describe PicturesFromDirectory, 'empty directory' do
   it 'should not show current picture' do
     expect(@pictures.current_picture).to eq nil
   end
+
+  it 'should not have next picture' do
+    expect(@pictures.next?).to eq false
+  end
+
+  it 'should not have previous picture' do
+    expect(@pictures.previous?).to eq false
+  end
 end
 
 RSpec.describe PicturesFromDirectory, 'directory without pictures' do
@@ -37,6 +45,14 @@ RSpec.describe PicturesFromDirectory, 'directory without pictures' do
   it 'should not show current picture' do
     expect(@pictures.current_picture).to eq nil
   end
+
+  it 'should not have next picture' do
+    expect(@pictures.next?).to eq false
+  end
+
+  it 'should not have previous picture' do
+    expect(@pictures.previous?).to eq false
+  end
 end
 
 RSpec.describe PicturesFromDirectory, 'directory with one picture' do
@@ -46,6 +62,24 @@ RSpec.describe PicturesFromDirectory, 'directory with one picture' do
   end
 
   it 'should show current picture' do
+    expect(@pictures.current_picture).to match(/file.jpg/)
+  end
+
+  it 'should not have next picture' do
+    expect(@pictures.next?).to eq false
+  end
+
+  it 'should not have previous picture' do
+    expect(@pictures.previous?).to eq false
+  end
+
+  it 'should do nothing when moving to next picture' do
+    10.times { @pictures.next_picture }
+    expect(@pictures.current_picture).to match(/file.jpg/)
+  end
+
+  it 'should do nothing when moving to previous picture' do
+    10.times { @pictures.previous_picture }
     expect(@pictures.current_picture).to match(/file.jpg/)
   end
 end
@@ -65,10 +99,33 @@ RSpec.describe PicturesFromDirectory, 'directory with several pictures' do
     expect(@pictures.current_picture).to match(/file2.jpg/)
   end
 
+  it 'should have next picture' do
+    expect(@pictures.next?).to eq true
+  end
+
+  it 'should not have previous picture' do
+    expect(@pictures.previous?).to eq false
+  end
+
   it 'should show first picture as current when moving back and forth' do
     @pictures.next_picture
     @pictures.previous_picture
     expect(@pictures.current_picture).to match(/file1.jpg/)
+  end
+
+  it 'should have previous picture after moving next' do
+    @pictures.next_picture
+    expect(@pictures.previous?).to eq true
+  end
+
+  it 'should do nothing when moving to previous picture' do
+    @pictures.previous_picture
+    expect(@pictures.current_picture).to match(/file1.jpg/)
+  end
+
+  it 'should do nothing when moving to next when at end' do
+    100.times { @pictures.next_picture }
+    expect(@pictures.current_picture).to match(/file10.jpg/)
   end
 end
 
