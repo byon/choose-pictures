@@ -6,11 +6,15 @@ class PicturesFromDirectory
     @directory = directory
     fail "\"#{@directory}\" does not exist" unless File.directory?(@directory)
     @pictures = read_pictures @directory
-    @current = 0
+    first_picture
   end
 
   def current_picture
     @pictures[@current]
+  end
+
+  def first_picture
+    @current = 0
   end
 
   def previous_picture
@@ -21,6 +25,10 @@ class PicturesFromDirectory
   def next_picture
     return unless next?
     @current += 1
+  end
+
+  def last_picture
+    @current = @pictures.length - 1
   end
 
   def previous?

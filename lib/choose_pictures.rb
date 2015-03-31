@@ -19,12 +19,20 @@ class ChoosePictures
     @pictures.current_picture ? @pictures.current_picture : ''
   end
 
+  def first_picture
+    @pictures.first_picture
+  end
+
   def previous_picture
     @pictures.previous_picture
   end
 
   def next_picture
     @pictures.next_picture
+  end
+
+  def last_picture
+    @pictures.last_picture
   end
 
   def has_previous

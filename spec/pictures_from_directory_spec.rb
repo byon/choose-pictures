@@ -34,6 +34,16 @@ RSpec.describe PicturesFromDirectory, 'empty directory' do
   it 'should not have previous picture' do
     expect(@pictures.previous?).to eq false
   end
+
+  it 'should do nothing when moving to first picture' do
+    @pictures.first_picture
+    expect(@pictures.current_picture).to eq nil
+  end
+
+  it 'should do nothing when moving to last picture' do
+    @pictures.last_picture
+    expect(@pictures.current_picture).to eq nil
+  end
 end
 
 RSpec.describe PicturesFromDirectory, 'directory without pictures' do
@@ -52,6 +62,16 @@ RSpec.describe PicturesFromDirectory, 'directory without pictures' do
 
   it 'should not have previous picture' do
     expect(@pictures.previous?).to eq false
+  end
+
+  it 'should do nothing when moving to first picture' do
+    @pictures.first_picture
+    expect(@pictures.current_picture).to eq nil
+  end
+
+  it 'should do nothing when moving to last picture' do
+    @pictures.last_picture
+    expect(@pictures.current_picture).to eq nil
   end
 end
 
@@ -80,6 +100,16 @@ RSpec.describe PicturesFromDirectory, 'directory with one picture' do
 
   it 'should do nothing when moving to previous picture' do
     10.times { @pictures.previous_picture }
+    expect(@pictures.current_picture).to match(/file.jpg/)
+  end
+
+  it 'should do nothing when moving to first picture' do
+    @pictures.first_picture
+    expect(@pictures.current_picture).to match(/file.jpg/)
+  end
+
+  it 'should do nothing when moving to last picture' do
+    @pictures.last_picture
     expect(@pictures.current_picture).to match(/file.jpg/)
   end
 end
@@ -125,6 +155,29 @@ RSpec.describe PicturesFromDirectory, 'directory with several pictures' do
 
   it 'should do nothing when moving to next when at end' do
     100.times { @pictures.next_picture }
+    expect(@pictures.current_picture).to match(/file10.jpg/)
+  end
+
+  it 'should do nothing when moving to first picture from start' do
+    @pictures.first_picture
+    expect(@pictures.current_picture).to match(/file1.jpg/)
+  end
+
+  it 'should do nothing when moving to last picture from end' do
+    100.times { @pictures.next_picture }
+    @pictures.last_picture
+    expect(@pictures.current_picture).to match(/file10.jpg/)
+  end
+
+  it 'should show first picture when moving to first picture' do
+    5.times { @pictures.next_picture }
+    @pictures.first_picture
+    expect(@pictures.current_picture).to match(/file1.jpg/)
+  end
+
+  it 'should show last picture when moving to last picture' do
+    5.times { @pictures.next_picture }
+    @pictures.last_picture
     expect(@pictures.current_picture).to match(/file10.jpg/)
   end
 end

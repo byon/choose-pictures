@@ -11,6 +11,12 @@ ApplicationWindow {
     height: 768
     title: "Choose Pictures"
 
+    function moveToFirst() {
+        choosePictures.first_picture()
+        currentPicture.source = choosePictures.current_picture()
+        updateNextAndPreviousButtons()
+    }
+
     function moveToPrevious() {
         choosePictures.previous_picture()
         currentPicture.source = choosePictures.current_picture()
@@ -23,10 +29,18 @@ ApplicationWindow {
         updateNextAndPreviousButtons()
     }
 
+    function moveToLast() {
+        choosePictures.last_picture()
+        currentPicture.source = choosePictures.current_picture()
+        updateNextAndPreviousButtons()
+    }
+
     function updateNextAndPreviousButtons() {
 
+        firstPictureButton.enabled = choosePictures.has_previous()
         previousPictureButton.enabled = choosePictures.has_previous()
         nextPictureButton.enabled = choosePictures.has_next()
+        lastPictureButton.enabled = choosePictures.has_next()
     }
 
     function setDirectoryFromUrl(url) {
@@ -93,6 +107,16 @@ ApplicationWindow {
 
         Keys.onDownPressed: nextPictureButton.clicked()
         Keys.onUpPressed: previousPictureButton.clicked()
+        Keys.onPressed: {
+            if (event.key === Qt.Key_Home) {
+                firstPictureButton.clicked()
+                event.accepted.true
+            }
+            else if (event.key === Qt.Key_End) {
+                lastPictureButton.clicked()
+                event.accepted.true
+            }
+        }
 
         ColumnLayout {
 
@@ -101,8 +125,15 @@ ApplicationWindow {
 
             Row {
 
-                id: previousNextButtonRow
+                id: navigationButtonRow
                 anchors.horizontalCenter: parent.horizontalCenter
+
+                Button {
+                    id: firstPictureButton
+                    text: 'First'
+                    onClicked: mainWindow.moveToFirst()
+                    enabled: false
+                }
 
                 Button {
                     id: previousPictureButton
@@ -117,12 +148,19 @@ ApplicationWindow {
                     onClicked: mainWindow.moveToNext()
                     enabled: false
                 }
+
+                Button {
+                    id: lastPictureButton
+                    text: 'Last'
+                    onClicked: mainWindow.moveToLast()
+                    enabled: false
+                }
             }
 
             Image {
 
                 id: currentPicture
-                anchors.top: previousNextButtonRow.bottom
+                anchors.top: navigationButtonRow.bottom
                 anchors.bottom: parent.bottom
                 anchors.left: parent.left
                 anchors.right: parent.right
