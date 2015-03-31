@@ -8,15 +8,11 @@ class PicturesFromDirectory
   end
 
   def current_picture
-    expression = picture_expression
+    expression = Regexp.union(ALL_EXTENSIONS)
     matches = Dir.glob(directory + '/*').sort.select { |i| i =~ expression }
     matches.length > 0 ? matches[0] : nil
   end
-
-  private
-
-  def picture_expression
-    extensions = %w( jpg jpeg png )
-    Regexp.union(extensions + extensions.map(&:upcase))
-  end
 end
+
+EXTENSIONS = %w( jpg jpeg png )
+ALL_EXTENSIONS = EXTENSIONS + EXTENSIONS.map(&:upcase)

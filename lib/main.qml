@@ -82,10 +82,13 @@ ApplicationWindow {
     FileDialog {
         id: fileDialog
         title: "Please choose a directory"
-        nameFilters: [ "Image files (*.jpg *.jpeg *.png) *.JPG *.JPEG *.PNG",
-                       "All files (*)" ]
+        nameFilters: [ imageFilters(), "All files (*)" ]
         selectFolder: true
         onAccepted: mainWindow.setDirectoryFromUrl(fileDialog.fileUrl)
+
+        function imageFilters() {
+            return "Image files (" + choosePictures.allowed_extensions() + ")"
+        }
     }
 
     ChoosePictures {

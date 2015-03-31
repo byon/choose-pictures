@@ -18,6 +18,10 @@ class ChoosePictures
     return '' unless @pictures
     @pictures.current_picture ? @pictures.current_picture : ''
   end
+
+  def allowed_extensions
+    ALL_EXTENSIONS.map { |e| '*.' + e }.join(' ')
+  end
 end
 
 QML.run do |app|
