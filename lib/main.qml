@@ -115,6 +115,8 @@ ApplicationWindow {
                 anchors.bottom: parent.bottom
                 anchors.left: parent.left
                 anchors.right: parent.right
+                sourceSize.width: 1024
+                sourceSize.height: 680
                 fillMode: Image.PreserveAspectFit
             }
         }
