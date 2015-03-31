@@ -19,8 +19,8 @@ end
 
 RSpec.describe PicturesFromDirectory, 'empty directory' do
   before(:each) do
-    @pictures = PicturesFromDirectory.new
     mock_directory_glob([])
+    @pictures = PicturesFromDirectory.new
   end
 
   it 'should not show current picture' do
@@ -30,8 +30,8 @@ end
 
 RSpec.describe PicturesFromDirectory, 'directory without pictures' do
   before(:each) do
-    @pictures = PicturesFromDirectory.new
     mock_directory_glob(%w( file.txt file.py file.rb ))
+    @pictures = PicturesFromDirectory.new
   end
 
   it 'should not show current picture' do
@@ -41,12 +41,28 @@ end
 
 RSpec.describe PicturesFromDirectory, 'directory with one picture' do
   before(:each) do
-    @pictures = PicturesFromDirectory.new
     mock_directory_glob(%w( file.jpg ))
+    @pictures = PicturesFromDirectory.new
   end
 
   it 'should show current picture' do
     expect(@pictures.current_picture).to match(/file.jpg/)
+  end
+end
+
+RSpec.describe PicturesFromDirectory, 'directory with several pictures' do
+  before(:each) do
+    mock_directory_glob((1..10).map { |i| "file#{i}.jpg" })
+    @pictures = PicturesFromDirectory.new
+  end
+
+  it 'should show first picture as current' do
+    expect(@pictures.current_picture).to match(/file1.jpg/)
+  end
+
+  it 'should show second picture as current when moving to next' do
+    @pictures.next_picture
+    expect(@pictures.current_picture).to match(/file2.jpg/)
   end
 end
 

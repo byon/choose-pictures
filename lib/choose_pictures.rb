@@ -19,6 +19,10 @@ class ChoosePictures
     @pictures.current_picture ? @pictures.current_picture : ''
   end
 
+  def next_picture
+    @pictures.next_picture
+  end
+
   def allowed_extensions
     ALL_EXTENSIONS.map { |e| '*.' + e }.join(' ')
   end

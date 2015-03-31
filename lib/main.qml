@@ -11,6 +11,11 @@ ApplicationWindow {
     height: 768
     title: "Choose Pictures"
 
+    function moveToNext() {
+        choosePictures.next_picture()
+        currentPicture.source = choosePictures.current_picture()
+    }
+
     function setDirectoryFromUrl(url) {
         setDirectory(urlToPath(url))
     }
@@ -70,12 +75,30 @@ ApplicationWindow {
         anchors.top: directoryRow.bottom
         anchors.bottom: parent.bottom
         anchors.right: parent.right
+        focus:true
 
-        Image {
+        Keys.onDownPressed: nextPicture.clicked()
 
-            id: currentPicture
+        ColumnLayout {
+
+            id: currentPictureColumn
             anchors.fill: parent
-            fillMode: Image.PreserveAspectFit
+
+            Button {
+                id: nextPicture
+                text: 'Next'
+                onClicked: mainWindow.moveToNext()
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+            Image {
+
+                id: currentPicture
+                anchors.top: nextPicture.bottom
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+                anchors.right: parent.right
+                fillMode: Image.PreserveAspectFit
+            }
         }
     }
 
