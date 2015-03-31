@@ -11,6 +11,11 @@ ApplicationWindow {
     height: 768
     title: "Choose Pictures"
 
+    function moveToPrevious() {
+        choosePictures.previous_picture()
+        currentPicture.source = choosePictures.current_picture()
+    }
+
     function moveToNext() {
         choosePictures.next_picture()
         currentPicture.source = choosePictures.current_picture()
@@ -78,22 +83,35 @@ ApplicationWindow {
         focus:true
 
         Keys.onDownPressed: nextPicture.clicked()
+        Keys.onUpPressed: previousPicture.clicked()
 
         ColumnLayout {
 
             id: currentPictureColumn
             anchors.fill: parent
 
-            Button {
-                id: nextPicture
-                text: 'Next'
-                onClicked: mainWindow.moveToNext()
+            Row {
+
+                id: previousNextButtonRow
                 anchors.horizontalCenter: parent.horizontalCenter
+
+                Button {
+                    id: previousPicture
+                    text: 'Previous'
+                    onClicked: mainWindow.moveToPrevious()
+                }
+
+                Button {
+                    id: nextPicture
+                    text: 'Next'
+                    onClicked: mainWindow.moveToNext()
+                }
             }
+
             Image {
 
                 id: currentPicture
-                anchors.top: nextPicture.bottom
+                anchors.top: previousNextButtonRow.bottom
                 anchors.bottom: parent.bottom
                 anchors.left: parent.left
                 anchors.right: parent.right

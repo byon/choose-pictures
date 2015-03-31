@@ -64,6 +64,12 @@ RSpec.describe PicturesFromDirectory, 'directory with several pictures' do
     @pictures.next_picture
     expect(@pictures.current_picture).to match(/file2.jpg/)
   end
+
+  it 'should show first picture as current when moving back and forth' do
+    @pictures.next_picture
+    @pictures.previous_picture
+    expect(@pictures.current_picture).to match(/file1.jpg/)
+  end
 end
 
 def mock_directory_glob(result)

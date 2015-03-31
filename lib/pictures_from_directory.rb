@@ -13,6 +13,10 @@ class PicturesFromDirectory
     @pictures[@current]
   end
 
+  def previous_picture
+    @current -= 1
+  end
+
   def next_picture
     @current += 1
   end
