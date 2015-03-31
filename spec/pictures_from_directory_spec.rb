@@ -1,7 +1,7 @@
 require 'pictures_from_directory'
 
 RSpec.describe PicturesFromDirectory, 'construction' do
-  it 'should have home directory as default path' do
+  it 'should by default use home directory' do
     pictures = PicturesFromDirectory.new
     expect(pictures.directory).to eq Dir.home
   end
@@ -23,7 +23,7 @@ RSpec.describe PicturesFromDirectory, 'empty directory' do
     mock_directory_glob([])
   end
 
-  it 'should not have current picture' do
+  it 'should not show current picture' do
     expect(@pictures.current_picture).to eq nil
   end
 end
@@ -34,18 +34,18 @@ RSpec.describe PicturesFromDirectory, 'directory without pictures' do
     mock_directory_glob(%w( file.txt file.py file.rb ))
   end
 
-  it 'should not have current picture' do
+  it 'should not show current picture' do
     expect(@pictures.current_picture).to eq nil
   end
 end
 
-RSpec.describe PicturesFromDirectory, 'one picture' do
+RSpec.describe PicturesFromDirectory, 'directory with one picture' do
   before(:each) do
     @pictures = PicturesFromDirectory.new
     mock_directory_glob(%w( file.jpg ))
   end
 
-  it 'should have current picture' do
+  it 'should show current picture' do
     expect(@pictures.current_picture).to match(/file.jpg/)
   end
 end
