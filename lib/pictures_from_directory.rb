@@ -51,7 +51,7 @@ class PicturesFromDirectory
 
   def read_pictures(directory)
     expression = Regexp.union(ALL_EXTENSIONS)
-    Dir.glob(directory + '/*').select { |i| i =~ expression }
+    Dir.glob(directory + '/*').sort.select { |i| i =~ expression }
   end
 end
 

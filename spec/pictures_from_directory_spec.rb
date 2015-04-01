@@ -143,7 +143,7 @@ end
 
 RSpec.describe PicturesFromDirectory, 'directory with several pictures' do
   before(:each) do
-    mock_directory_glob((1..10).map { |i| "file#{i}.jpg" })
+    mock_directory_glob((1..9).map { |i| "file#{i}.jpg" })
     @pictures = PicturesFromDirectory.new
   end
 
@@ -182,7 +182,7 @@ RSpec.describe PicturesFromDirectory, 'directory with several pictures' do
 
   it 'should do nothing when moving to next when at end' do
     100.times { @pictures.next_picture }
-    expect(@pictures.current_picture).to match(/file10.jpg/)
+    expect(@pictures.current_picture).to match(/file9.jpg/)
   end
 
   it 'should do nothing when moving to first picture from start' do
@@ -193,7 +193,7 @@ RSpec.describe PicturesFromDirectory, 'directory with several pictures' do
   it 'should do nothing when moving to last picture from end' do
     100.times { @pictures.next_picture }
     @pictures.last_picture
-    expect(@pictures.current_picture).to match(/file10.jpg/)
+    expect(@pictures.current_picture).to match(/file9.jpg/)
   end
 
   it 'should show first picture when moving to first picture' do
@@ -205,7 +205,32 @@ RSpec.describe PicturesFromDirectory, 'directory with several pictures' do
   it 'should show last picture when moving to last picture' do
     5.times { @pictures.next_picture }
     @pictures.last_picture
-    expect(@pictures.current_picture).to match(/file10.jpg/)
+    expect(@pictures.current_picture).to match(/file9.jpg/)
+  end
+end
+
+RSpec.describe PicturesFromDirectory, 'unsorted pictures' do
+  before(:each) do
+    mock_directory_glob(with_extensions(%w(buu baa argh kreegah bundolo)))
+    @pictures = PicturesFromDirectory.new
+  end
+
+  it 'should be iterated in alphabetical order' do
+    expected = %w(argh baa bundolo buu kreegah)
+    expect(read_pictures).to eq(with_extensions(expected))
+  end
+
+  def with_extensions(names)
+    names.map { |n| "#{n}.jpg" }
+  end
+
+  def read_pictures
+    result = []
+    while @pictures.next?
+      result << @pictures.current_picture
+      @pictures.next_picture
+    end
+    result << @pictures.current_picture
   end
 end
 
