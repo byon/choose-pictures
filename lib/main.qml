@@ -3,6 +3,7 @@ import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.0
 import CurrentPicture 1.0
+import Selection 1.0
 
 ApplicationWindow {
     visible: true
@@ -10,6 +11,7 @@ ApplicationWindow {
     width: 1024
     height: 768
     title: "Choose Pictures"
+    Component.onCompleted: selection.link_current_to_selection(currentPicture)
 
     function moveToFirst() {
         currentPicture.move_to_first()
@@ -41,6 +43,10 @@ ApplicationWindow {
         previousPictureButton.enabled = currentPicture.has_previous()
         nextPictureButton.enabled = currentPicture.has_next()
         lastPictureButton.enabled = currentPicture.has_next()
+    }
+
+    function selectCurrentPicture() {
+        selection.select_current()
     }
 
     function setDirectoryFromUrl(url) {
@@ -107,6 +113,7 @@ ApplicationWindow {
 
         Keys.onDownPressed: nextPictureButton.clicked()
         Keys.onUpPressed: previousPictureButton.clicked()
+        Keys.onRightPressed: selectButton.clicked()
         Keys.onPressed: {
             if (event.key === Qt.Key_Home) {
                 firstPictureButton.clicked()
@@ -121,7 +128,10 @@ ApplicationWindow {
         ColumnLayout {
 
             id: currentPictureColumn
-            anchors.fill: parent
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            anchors.right: selectButton.left
 
             Row {
 
@@ -169,6 +179,29 @@ ApplicationWindow {
                 fillMode: Image.PreserveAspectFit
             }
         }
+
+        Button {
+            id: selectButton
+            text: "Select"
+            anchors.right: selectedPicturesView.left
+            onClicked: mainWindow.selectCurrentPicture()
+        }
+
+        ListView {
+            id: selectedPicturesView
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.right: parent.right
+            spacing: 5
+            model: selection.model
+            width: 256
+            delegate: Image {
+                source: picturePath
+                sourceSize.width: 256
+                sourceSize.height: 256
+                fillMode: Image.PreserveAspectFit
+            }
+        }
     }
 
     FileDialog {
@@ -186,5 +219,9 @@ ApplicationWindow {
     CurrentPicture {
 
         id: currentPicture
+    }
+
+    Selection {
+        id: selection
     }
 }
