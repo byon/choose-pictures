@@ -23,6 +23,27 @@ RSpec.describe PicturesFromDirectory, 'construction' do
   end
 end
 
+RSpec.describe PicturesFromDirectory, 'changing directory' do
+  it 'should look for any files from the changed directory' do
+    pictures = PicturesFromDirectory.new
+    glob = expect_directory_glob('changed/*', %w(file1.jpg file2.jpg))
+    pictures.directory = 'changed'
+    expect(pictures.directory).to eq 'changed'
+    glob.valid?
+  end
+
+  it 'should reset to first file in directory' do
+    mock_directory_glob(%w(original1.jpg original2.jpg))
+    pictures = PicturesFromDirectory.new
+    pictures.next_picture
+
+    mock_directory_glob(%w(file1.jpg file2.jpg))
+    pictures.directory = 'changed'
+
+    expect(pictures.current_picture).to eq 'file1.jpg'
+  end
+end
+
 RSpec.describe PicturesFromDirectory, 'empty directory' do
   before(:each) do
     mock_directory_glob([])
@@ -192,8 +213,8 @@ def mock_directory_glob(result)
   allow(Dir).to receive(:glob).and_return(result)
 end
 
-def expect_directory_glob
+def expect_directory_glob(expected = './*', result = [])
   glob = double.as_null_object
-  expect(Dir).to receive(:glob).with('./*') { glob }
+  expect(Dir).to receive(:glob).with(expected) { glob } .and_return(result)
   glob
 end

@@ -6,12 +6,13 @@ class ChoosePictures
   include QML::Access
   register_to_qml under: 'ChoosePictures', version: '1.0'
 
-  def initalize
+  def initialize
     super
+    @pictures = PicturesFromDirectory.new
   end
 
   def use_directory(directory)
-    @pictures = PicturesFromDirectory.new(directory)
+    @pictures.directory = directory
   end
 
   def current_picture

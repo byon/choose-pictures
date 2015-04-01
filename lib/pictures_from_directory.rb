@@ -3,10 +3,12 @@ class PicturesFromDirectory
   attr_reader :directory
 
   def initialize(directory = Dir.home)
-    @directory = directory
-    fail "\"#{@directory}\" does not exist" unless File.directory?(@directory)
-    @pictures = read_pictures @directory
-    first_picture
+    fail "\"#{directory}\" does not exist" unless File.directory?(directory)
+    reset_directory(directory)
+  end
+
+  def directory=(directory)
+    reset_directory(directory)
   end
 
   def current_picture
@@ -40,6 +42,12 @@ class PicturesFromDirectory
   end
 
   private
+
+  def reset_directory(directory)
+    @directory = directory
+    @pictures = read_pictures @directory
+    first_picture
+  end
 
   def read_pictures(directory)
     expression = Regexp.union(ALL_EXTENSIONS)
