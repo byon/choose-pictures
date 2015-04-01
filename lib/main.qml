@@ -2,7 +2,7 @@ import QtQuick 2.2
 import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.0
-import ChoosePictures 1.0
+import CurrentPicture 1.0
 
 ApplicationWindow {
     visible: true
@@ -12,35 +12,35 @@ ApplicationWindow {
     title: "Choose Pictures"
 
     function moveToFirst() {
-        choosePictures.first_picture()
-        currentPicture.source = choosePictures.current_picture()
+        currentPicture.move_to_first()
+        currentPictureImage.source = currentPicture.current_picture()
         updateNextAndPreviousButtons()
     }
 
     function moveToPrevious() {
-        choosePictures.previous_picture()
-        currentPicture.source = choosePictures.current_picture()
+        currentPicture.move_to_previous()
+        currentPictureImage.source = currentPicture.current_picture()
         updateNextAndPreviousButtons()
     }
 
     function moveToNext() {
-        choosePictures.next_picture()
-        currentPicture.source = choosePictures.current_picture()
+        currentPicture.move_to_next()
+        currentPictureImage.source = currentPicture.current_picture()
         updateNextAndPreviousButtons()
     }
 
     function moveToLast() {
-        choosePictures.last_picture()
-        currentPicture.source = choosePictures.current_picture()
+        currentPicture.move_to_last()
+        currentPictureImage.source = currentPicture.current_picture()
         updateNextAndPreviousButtons()
     }
 
     function updateNextAndPreviousButtons() {
 
-        firstPictureButton.enabled = choosePictures.has_previous()
-        previousPictureButton.enabled = choosePictures.has_previous()
-        nextPictureButton.enabled = choosePictures.has_next()
-        lastPictureButton.enabled = choosePictures.has_next()
+        firstPictureButton.enabled = currentPicture.has_previous()
+        previousPictureButton.enabled = currentPicture.has_previous()
+        nextPictureButton.enabled = currentPicture.has_next()
+        lastPictureButton.enabled = currentPicture.has_next()
     }
 
     function setDirectoryFromUrl(url) {
@@ -49,8 +49,8 @@ ApplicationWindow {
 
     function setDirectory(path) {
         chosenDirectory.text = path
-        choosePictures.use_directory(path)
-        currentPicture.source = choosePictures.current_picture()
+        currentPicture.use_directory(path)
+        currentPictureImage.source = currentPicture.current_picture()
         updateNextAndPreviousButtons()
     }
 
@@ -159,7 +159,7 @@ ApplicationWindow {
 
             Image {
 
-                id: currentPicture
+                id: currentPictureImage
                 anchors.top: navigationButtonRow.bottom
                 anchors.bottom: parent.bottom
                 anchors.left: parent.left
@@ -179,12 +179,12 @@ ApplicationWindow {
         onAccepted: mainWindow.setDirectoryFromUrl(fileDialog.fileUrl)
 
         function imageFilters() {
-            return "Image files (" + choosePictures.allowed_extensions() + ")"
+            return "Image files (" + currentPicture.allowed_extensions() + ")"
         }
     }
 
-    ChoosePictures {
+    CurrentPicture {
 
-        id: choosePictures
+        id: currentPicture
     }
 }
