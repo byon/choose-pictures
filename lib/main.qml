@@ -183,23 +183,29 @@ ApplicationWindow {
         Button {
             id: selectButton
             text: "Select"
-            anchors.right: selectedPicturesView.left
+            anchors.right: selectedPicturesScrollView.left
             onClicked: mainWindow.selectCurrentPicture()
         }
 
-        ListView {
-            id: selectedPicturesView
+        ScrollView {
+
+            id: selectedPicturesScrollView
+            anchors.right: parent.right
             anchors.top: parent.top
             anchors.bottom: parent.bottom
-            anchors.right: parent.right
-            spacing: 5
-            model: selection.model
             width: 256
-            delegate: Image {
-                source: picturePath
-                sourceSize.width: 256
-                sourceSize.height: 256
-                fillMode: Image.PreserveAspectFit
+            frameVisible: true
+
+            ListView {
+                id: selectedPicturesView
+                spacing: 5
+                model: selection.model
+                delegate: Image {
+                    source: picturePath
+                    sourceSize.width: 256
+                    sourceSize.height: 256
+                    fillMode: Image.PreserveAspectFit
+                }
             }
         }
     }
