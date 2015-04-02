@@ -16,38 +16,59 @@ ApplicationWindow {
     function moveToFirst() {
         currentPicture.move_to_first()
         currentPictureImage.source = currentPicture.current_picture()
-        updateNextAndPreviousButtons()
+        updateButtons()
     }
 
     function moveToPrevious() {
         currentPicture.move_to_previous()
         currentPictureImage.source = currentPicture.current_picture()
-        updateNextAndPreviousButtons()
+        updateButtons()
     }
 
     function moveToNext() {
         currentPicture.move_to_next()
         currentPictureImage.source = currentPicture.current_picture()
-        updateNextAndPreviousButtons()
+        updateButtons()
     }
 
     function moveToLast() {
         currentPicture.move_to_last()
         currentPictureImage.source = currentPicture.current_picture()
-        updateNextAndPreviousButtons()
+        updateButtons()
     }
 
-    function updateNextAndPreviousButtons() {
+    function updateButtons() {
 
         firstPictureButton.enabled = currentPicture.has_previous()
         previousPictureButton.enabled = currentPicture.has_previous()
         nextPictureButton.enabled = currentPicture.has_next()
         lastPictureButton.enabled = currentPicture.has_next()
+        selectButton.enabled = currentPicture.current_picture() != ''
+        updateSelectionButtonText()
     }
 
-    function selectCurrentPicture() {
-        selection.select_current()
-        selectedPicturesView.positionViewAtEnd()
+    function selectOrRemoveCurrentPicture() {
+        var select = !selection.is_selected(currentPicture.current_picture())
+        updateSelectionForCurrentPicture(select)
+    }
+
+    function updateSelectionForCurrentPicture(select) {
+        if (select) {
+            selection.select_current()
+            selectedPicturesView.positionViewAtEnd()
+        }
+        else {
+            selection.remove_current()
+        }
+        updateSelectionButtonText()
+    }
+
+    function updateSelectionButtonText() {
+        if (selection.is_selected(currentPicture.current_picture())) {
+            selectButton.text = "Remove"
+            return
+        }
+        selectButton.text = "Select"
     }
 
     function setDirectoryFromUrl(url) {
@@ -58,7 +79,7 @@ ApplicationWindow {
         chosenDirectory.text = path
         currentPicture.use_directory(path)
         currentPictureImage.source = currentPicture.current_picture()
-        updateNextAndPreviousButtons()
+        updateButtons()
     }
 
     function urlToPath(url) {
@@ -114,7 +135,8 @@ ApplicationWindow {
 
         Keys.onDownPressed: nextPictureButton.clicked()
         Keys.onUpPressed: previousPictureButton.clicked()
-        Keys.onRightPressed: selectButton.clicked()
+        Keys.onRightPressed: updateSelectionForCurrentPicture(true)
+        Keys.onLeftPressed: updateSelectionForCurrentPicture(false)
         Keys.onPressed: {
             if (event.key === Qt.Key_Home) {
                 firstPictureButton.clicked()
@@ -185,7 +207,8 @@ ApplicationWindow {
             id: selectButton
             text: "Select"
             anchors.right: selectedPicturesScrollView.left
-            onClicked: mainWindow.selectCurrentPicture()
+            onClicked: mainWindow.selectOrRemoveCurrentPicture()
+            enabled: false
         }
 
         ScrollView {

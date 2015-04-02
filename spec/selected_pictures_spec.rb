@@ -36,6 +36,97 @@ RSpec.describe SelectedPictures, 'selecting when there is no current picture' do
   end
 end
 
+RSpec.describe SelectedPictures, 'removing the only selection' do
+  before(:each) do
+    @selected, @source, @model = create_selected_pictures('current')
+    @model << { picturePath: 'current' }
+  end
+
+  it 'should remove it from selection' do
+    @selected.remove_current
+    expect(@model).to eq []
+  end
+end
+
+RSpec.describe SelectedPictures, 'removing from multiple selections' do
+  before(:each) do
+    @selected, @source, @model = create_selected_pictures(nil)
+    @model << { picturePath: 'start' }
+    @model << { picturePath: 'middle' }
+    @model << { picturePath: 'end' }
+  end
+
+  it 'should remove current from the start' do
+    @source.current_picture = 'start'
+    @selected.remove_current
+    expect(@model).to eq expected_model %w(middle end)
+  end
+
+  it 'should remove current from the end' do
+    @source.current_picture = 'end'
+    @selected.remove_current
+    expect(@model).to eq expected_model %w(start middle)
+  end
+
+  it 'should remove current from the middle' do
+    @source.current_picture = 'middle'
+    @selected.remove_current
+    expect(@model).to eq expected_model %w(start end)
+  end
+
+  it 'should do nothing if current is not selected' do
+    @source.current_picture = 'not selected'
+    @selected.remove_current
+    expect(@model).to eq expected_model %w(start middle end)
+  end
+
+  def expected_model(paths)
+    paths.map { |p| { picturePath: p } }
+  end
+end
+
+RSpec.describe SelectedPictures, 'removing without selection' do
+  before(:each) do
+    @selected, @source, @model = create_selected_pictures('current')
+  end
+
+  it 'should do nothing' do
+    @selected.remove_current
+    expect(@model).to eq []
+  end
+end
+
+RSpec.describe SelectedPictures, 'removing without current picture' do
+  before(:each) do
+    @selected, @source, @model = create_selected_pictures(nil)
+  end
+
+  it 'should do nothing' do
+    @selected.remove_current
+    expect(@model).to eq []
+  end
+end
+
+RSpec.describe SelectedPictures, 'checking if selected' do
+  before(:each) do
+    @selected, @source, @model = create_selected_pictures('current')
+  end
+
+  it 'should be false if there is nothing selected' do
+    expect(@selected.selected? 'meanginless').to eq false
+  end
+
+  it 'should be true if picture is selected' do
+    @model << { picturePath: 'selected' }
+    expect(@selected.selected? 'selected').to eq true
+  end
+
+  it 'should be false if other picture is selected' do
+    @model << { picturePath: 'something else' }
+    expect(@selected.selected? 'selected').to eq false
+  end
+end
+
 def create_selected_pictures(current_picture)
   source = PicturesDouble.new(current_picture)
   model = []
