@@ -5,11 +5,11 @@ RSpec.describe SelectedPictures, 'construction' do
     @selected, @source, @model = create_selected_pictures(nil)
   end
 
-  it 'will store source' do
+  it 'should store source' do
     expect(@selected.source).to be @source
   end
 
-  it 'will store model' do
+  it 'should store model' do
     expect(@selected.model).to eq @model
   end
 end
