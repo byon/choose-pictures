@@ -10,6 +10,7 @@ class SelectedPictures
 
   def select_current
     return unless @source.current_picture
+    return if find_picture @source.current_picture
     @model << { picturePath: @source.current_picture }
   end
 

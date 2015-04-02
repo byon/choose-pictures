@@ -23,6 +23,11 @@ RSpec.describe SelectedPictures, 'selecting current picture' do
     @selected.select_current
     expect(@model).to eq [{ picturePath: 'current' }]
   end
+
+  it 'should be idempotent' do
+    10.times { @selected.select_current }
+    expect(@model).to eq [{ picturePath: 'current' }]
+  end
 end
 
 RSpec.describe SelectedPictures, 'selecting when there is no current picture' do

@@ -217,7 +217,8 @@ ApplicationWindow {
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.bottom: parent.bottom
-            width: 256
+            verticalScrollBarPolicy: Qt.ScrollBarAlwaysOn
+            width: 5000
             frameVisible: true
 
             ListView {
