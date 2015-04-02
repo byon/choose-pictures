@@ -47,6 +47,7 @@ ApplicationWindow {
 
     function selectCurrentPicture() {
         selection.select_current()
+        selectedPicturesView.positionViewAtEnd()
     }
 
     function setDirectoryFromUrl(url) {
