@@ -23,6 +23,10 @@ class SelectedPictures
     !find_picture(to_check).nil?
   end
 
+  def selection?
+    @model.map { |s| s[:picturePath] }
+  end
+
   private
 
   def find_picture(to_find)

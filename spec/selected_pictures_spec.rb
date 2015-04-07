@@ -12,6 +12,10 @@ RSpec.describe SelectedPictures, 'construction' do
   it 'should store model' do
     expect(@selected.model).to eq @model
   end
+
+  it 'should set selection to empty' do
+    expect(@selected.selection?).to eq []
+  end
 end
 
 RSpec.describe SelectedPictures, 'selecting current picture' do
@@ -20,6 +24,11 @@ RSpec.describe SelectedPictures, 'selecting current picture' do
   end
 
   it 'should store it in selection' do
+    @selected.select_current
+    expect(@selected.selection?).to eq %w(current)
+  end
+
+  it 'should add the picture to the model' do
     @selected.select_current
     expect(@model).to eq [{ picturePath: 'current' }]
   end
@@ -48,6 +57,11 @@ RSpec.describe SelectedPictures, 'removing the only selection' do
   end
 
   it 'should remove it from selection' do
+    @selected.remove_current
+    expect(@selected.selection?).to eq []
+  end
+
+  it 'should remove it from the model' do
     @selected.remove_current
     expect(@model).to eq []
   end

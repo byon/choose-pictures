@@ -20,12 +20,17 @@ class Selection
     @selected_pictures.remove_current
   end
 
-  # Temporarily disabling a style warning from Rubocop. The normal
+  # Temporarily disabling style warnings from Rubocop. The normal
   # method names for getters (e.g., previous? and next?) are not valid
   # code in QML.
   # rubocop:disable Style/PredicateName
+  # rubocop:disable Style/AccessorMethodName
   def is_selected(to_check)
     @selected_pictures.selected?(to_check)
+  end
+
+  def get_selected
+    @selected_pictures.selection?
   end
   # rubocop:enable Style/PredicateName
 end

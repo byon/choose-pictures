@@ -1,7 +1,9 @@
 import QtQuick 2.2
 import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
-import QtQuick.Dialogs 1.0
+import QtQuick.Dialogs 1.1
+
+import CopyPictures 1.0
 import CurrentPicture 1.0
 import Selection 1.0
 
@@ -69,6 +71,16 @@ ApplicationWindow {
             return
         }
         selectButton.text = "Select"
+    }
+
+    function copyPicturesTo(url) {
+        copyPictures.copy_pictures(mainWindow, selection.get_selected(),
+                                   urlToPath(url))
+    }
+
+    function showError(error) {
+        copyErrorDialog.text = error
+        copyErrorDialog.open()
     }
 
     function setDirectoryFromUrl(url) {
@@ -206,31 +218,47 @@ ApplicationWindow {
         Button {
             id: selectButton
             text: "Select"
-            anchors.right: selectedPicturesScrollView.left
+            anchors.right: selectedPicturesColumn.left
             onClicked: mainWindow.selectOrRemoveCurrentPicture()
             enabled: false
         }
 
-        ScrollView {
-
-            id: selectedPicturesScrollView
+        ColumnLayout {
+            id: selectedPicturesColumn
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.bottom: parent.bottom
-            verticalScrollBarPolicy: Qt.ScrollBarAlwaysOn
             width: 5000
-            frameVisible: true
 
-            ListView {
-                id: selectedPicturesView
-                spacing: 5
-                model: selection.model
-                delegate: Image {
-                    source: picturePath
-                    sourceSize.width: 256
-                    sourceSize.height: 256
-                    fillMode: Image.PreserveAspectFit
+            ScrollView {
+
+                id: selectedPicturesScrollView
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.bottom: copyButton.top
+                verticalScrollBarPolicy: Qt.ScrollBarAlwaysOn
+                frameVisible: true
+
+                ListView {
+                    id: selectedPicturesView
+                    spacing: 5
+                    model: selection.model
+                    delegate: Image {
+                        source: picturePath
+                        sourceSize.width: 256
+                        sourceSize.height: 256
+                        fillMode: Image.PreserveAspectFit
+                    }
                 }
+            }
+
+            Button {
+                id: copyButton
+                text: "Copy"
+                anchors.bottom: parent.bottom
+                anchors.horizontalCenter: parent.horizontalCenter
+                onClicked: targetDirectoryDialog.open()
             }
         }
     }
@@ -249,6 +277,20 @@ ApplicationWindow {
         }
     }
 
+    FileDialog {
+        id: targetDirectoryDialog
+        title: "Please choose a directory"
+        selectFolder: true
+        onAccepted: {
+            mainWindow.copyPicturesTo(targetDirectoryDialog.fileUrl)
+        }
+    }
+
+    MessageDialog {
+        id: copyErrorDialog
+        title: "Picture copying failed"
+    }
+
     CurrentPicture {
 
         id: currentPicture
@@ -256,5 +298,9 @@ ApplicationWindow {
 
     Selection {
         id: selection
+    }
+
+    CopyPictures {
+        id: copyPictures
     }
 }

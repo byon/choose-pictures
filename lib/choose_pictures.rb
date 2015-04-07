@@ -1,4 +1,5 @@
 require 'qml'
+require_relative 'copy_pictures'
 require_relative 'current_picture'
 require_relative 'selection'
 
