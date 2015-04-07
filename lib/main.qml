@@ -45,6 +45,9 @@ ApplicationWindow {
         previousPictureButton.enabled = currentPicture.has_previous()
         nextPictureButton.enabled = currentPicture.has_next()
         lastPictureButton.enabled = currentPicture.has_next()
+
+        updateCopyButton()
+
         selectButton.enabled = currentPicture.current_picture() != ''
         updateSelectionButtonText()
     }
@@ -63,6 +66,7 @@ ApplicationWindow {
             selection.remove_current()
         }
         updateSelectionButtonText()
+        updateCopyButton()
     }
 
     function updateSelectionButtonText() {
@@ -71,6 +75,11 @@ ApplicationWindow {
             return
         }
         selectButton.text = "Select"
+    }
+
+    function updateCopyButton() {
+
+        copyButton.enabled = selectedPicturesView.count > 0
     }
 
     function copyPicturesTo(url) {
@@ -259,6 +268,7 @@ ApplicationWindow {
                 anchors.bottom: parent.bottom
                 anchors.horizontalCenter: parent.horizontalCenter
                 onClicked: targetDirectoryDialog.open()
+                enabled: false
             }
         }
     }
