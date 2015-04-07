@@ -120,7 +120,7 @@ ApplicationWindow {
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.bottom: parent.bottom
-            onClicked: fileDialog.open()
+            onClicked: sourceDirectoryDialog.open()
         }
     }
 
@@ -236,11 +236,13 @@ ApplicationWindow {
     }
 
     FileDialog {
-        id: fileDialog
+        id: sourceDirectoryDialog
         title: "Please choose a directory"
         nameFilters: [ imageFilters(), "All files (*)" ]
         selectFolder: true
-        onAccepted: mainWindow.setDirectoryFromUrl(fileDialog.fileUrl)
+        onAccepted: {
+            mainWindow.setDirectoryFromUrl(sourceDirectoryDialog.fileUrl)
+        }
 
         function imageFilters() {
             return "Image files (" + currentPicture.allowed_extensions() + ")"
