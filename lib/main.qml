@@ -87,9 +87,18 @@ ApplicationWindow {
                                    urlToPath(url))
     }
 
+    function forceCopyPicturesTo(url) {
+        copyPictures.force_copy_pictures(mainWindow, selection.get_selected(),
+                                         urlToPath(url))
+    }
+
     function showError(error) {
         copyErrorDialog.text = error
         copyErrorDialog.open()
+    }
+
+    function ask_overwrite_permission() {
+        copyWarningDialog.open()
     }
 
     function setDirectoryFromUrl(url) {
@@ -299,6 +308,15 @@ ApplicationWindow {
     MessageDialog {
         id: copyErrorDialog
         title: "Picture copying failed"
+    }
+
+    MessageDialog {
+        id: copyWarningDialog
+        title: "Proceed with copying?"
+        text: "Some/all pictures in folder will be overwritten. Proceed?"
+        icon: StandardIcon.Question
+        standardButtons: StandardButton.Yes | StandardButton.No
+        onYes: mainWindow.forceCopyPicturesTo(targetDirectoryDialog.fileUrl)
     }
 
     CurrentPicture {

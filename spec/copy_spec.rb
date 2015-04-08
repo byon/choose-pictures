@@ -22,6 +22,10 @@ shared_context 'test helpers for copy' do |create_target = true|
     FileUtils.rm_rf TEST_DIRECTORY
   end
 
+  def test_overwrite(sources)
+    @copier.overwrite?(sources, TARGET_DIRECTORY)
+  end
+
   def test_copy(sources)
     @copier.copy(sources, TARGET_DIRECTORY)
   end
@@ -36,8 +40,36 @@ shared_context 'test helpers for copy' do |create_target = true|
     files
   end
 
+  def create_target_file(name)
+    FileUtils.touch(File.join(TARGET_DIRECTORY, name))
+  end
+
   def source_files(count)
     (1..count).map { |i| "#{SOURCE_DIRECTORY}/file#{i}.jpg" }
+  end
+end
+
+RSpec.describe 'overwrite check' do
+  include_context 'test helpers for copy'
+
+  it 'should fail if there are no files in directory' do
+    expect(test_overwrite(['does_not_matter_its_not_there.jpg'])).to eq false
+  end
+
+  it 'should pass if there are is one file with same name' do
+    create_target_file(@source_files[0])
+    expect(test_overwrite([@source_paths[0]])).to eq true
+  end
+
+  it 'should fail if there are only unmatching files' do
+    create_target_file('something_that_does_not_match.jpg')
+    expect(test_overwrite([@source_paths[0]])).to eq false
+  end
+
+  it 'should pass if there is one matching files' do
+    create_target_file(@source_files[0])
+    create_target_file('a_file_that_does_not_match.jpg')
+    expect(test_overwrite([@source_paths[0]])).to eq true
   end
 end
 

@@ -12,6 +12,15 @@ class CopyPictures
 
   def copy_pictures(controller, selected_pictures, target_directory)
     copier = Copy.new(-> e { controller.show_error e })
+    if copier.overwrite?(selected_pictures, target_directory)
+      controller.ask_overwrite_permission
+      return
+    end
+    copier.copy(selected_pictures, target_directory)
+  end
+
+  def force_copy_pictures(controller, selected_pictures, target_directory)
+    copier = Copy.new(-> e { controller.show_error e })
     copier.copy(selected_pictures, target_directory)
   end
 end
