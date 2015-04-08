@@ -56,6 +56,10 @@ ApplicationWindow {
     }
 
     function updateSelectionForCurrentPicture(select) {
+        if (currentPicture.current_picture() == '') {
+            return
+        }
+
         if (select) {
             selection.select_current()
             selectedPicturesView.positionViewAtEnd()
