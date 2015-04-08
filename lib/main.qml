@@ -16,25 +16,23 @@ ApplicationWindow {
     Component.onCompleted: selection.link_current_to_selection(currentPicture)
 
     function moveToFirst() {
-        currentPicture.move_to_first()
-        currentPictureImage.source = currentPicture.current_picture()
-        updateButtons()
+        moveTo(currentPicture.move_to_first)
     }
 
     function moveToPrevious() {
-        currentPicture.move_to_previous()
-        currentPictureImage.source = currentPicture.current_picture()
-        updateButtons()
+        moveTo(currentPicture.move_to_previous)
     }
 
     function moveToNext() {
-        currentPicture.move_to_next()
-        currentPictureImage.source = currentPicture.current_picture()
-        updateButtons()
+        moveTo(currentPicture.move_to_next)
     }
 
     function moveToLast() {
-        currentPicture.move_to_last()
+        moveTo(currentPicture.move_to_last)
+    }
+
+    function moveTo(mover) {
+        mover()
         currentPictureImage.source = currentPicture.current_picture()
         updateButtons()
     }
