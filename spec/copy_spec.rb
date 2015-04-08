@@ -22,7 +22,7 @@ shared_context 'test helpers for copy' do |create_target = true|
     FileUtils.rm_rf TEST_DIRECTORY
   end
 
-  def test(sources)
+  def test_copy(sources)
     @copier.copy(sources, TARGET_DIRECTORY)
   end
 
@@ -45,17 +45,17 @@ RSpec.describe 'copying files' do
   include_context 'test helpers for copy'
 
   it 'with one file should succeed' do
-    test([@source_paths[0]])
+    test_copy([@source_paths[0]])
     expect(copied_files).to eq [@source_files[0]]
   end
 
   it 'with multiple files should succeed' do
-    test(@source_paths)
+    test_copy(@source_paths)
     expect(copied_files).to eq @source_files
   end
 
   it 'with no files should do nothing' do
-    test([])
+    test_copy([])
     expect(copied_files).to eq []
   end
 end
@@ -64,7 +64,7 @@ RSpec.describe 'with missing target folder' do
   include_context 'test helpers for copy', false
 
   it 'reported error should be about missing target' do
-    test(@source_paths)
+    test_copy(@source_paths)
     # Note that the exception message is sort of weird from FileUtils.cp as it
     # says the file does not exist, when the entire directory is missing.
     missing_path = "#{TARGET_DIRECTORY}/#{@source_files[0]}"
@@ -84,7 +84,7 @@ RSpec.describe 'with read-only target folder' do
   end
 
   it 'reported error should be about missing permission' do
-    test(@source_paths)
+    test_copy(@source_paths)
     path = "#{TARGET_DIRECTORY}/#{@source_files[0]}"
     expect(@errors).to eq ["Permission denied #{path}"]
   end
@@ -98,7 +98,7 @@ RSpec.describe 'with already deleted source file' do
   end
 
   it 'reported error should be about missing permission' do
-    test([@source_paths[0]])
+    test_copy([@source_paths[0]])
     expect(@errors).to eq ["No such file or directory #{@source_paths[0]}"]
   end
 end
