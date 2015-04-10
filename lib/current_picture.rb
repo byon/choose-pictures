@@ -11,6 +11,10 @@ class CurrentPicture
     @pictures = PicturesFromDirectory.new
   end
 
+  def default_directory
+    ARGV[0] ? ARGV[0] : Dir.pwd
+  end
+
   def use_directory(directory)
     @pictures.directory = directory
   end

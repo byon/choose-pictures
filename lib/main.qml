@@ -13,7 +13,13 @@ ApplicationWindow {
     width: 1024
     height: 768
     title: "Choose Pictures"
-    Component.onCompleted: selection.link_current_to_selection(currentPicture)
+    Component.onCompleted: initialize()
+
+    function initialize() {
+
+        selection.link_current_to_selection(currentPicture)
+        setDirectory(currentPicture.default_directory())
+    }
 
     function moveToFirst() {
         moveTo(currentPicture.move_to_first)
