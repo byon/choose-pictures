@@ -11,11 +11,6 @@ RSpec.describe PicturesFromDirectory, 'construction' do
     expect(pictures.directory).to eq Dir.pwd
   end
 
-  it 'should raise error, if the directory does not exist' do
-    expect { PicturesFromDirectory.new('-') }
-      .to raise_error '"-" does not exist'
-  end
-
   it 'should look for any files from the directory' do
     glob = expect_directory_glob
     PicturesFromDirectory.new('.')

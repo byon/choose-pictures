@@ -3,7 +3,6 @@ class PicturesFromDirectory
   attr_reader :directory
 
   def initialize(directory = Dir.home)
-    fail "\"#{directory}\" does not exist" unless File.directory?(directory)
     reset_directory(directory)
   end
 
