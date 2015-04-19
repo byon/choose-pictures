@@ -46,6 +46,16 @@ RSpec.describe SelectedPictures, 'selecting current picture' do
     @selected.select_current
     expect(@selected.index?('current')).to eq(0)
   end
+
+  it 'should store it in alphabetical order' do
+    @selected.select_current
+    @source.current_picture = 'a'
+    @selected.select_current
+    @source.current_picture = 'd'
+    @selected.select_current
+    expect(@model).to eq [{ picturePath: 'a' }, { picturePath: 'current' },
+                          { picturePath: 'd' }]
+  end
 end
 
 RSpec.describe SelectedPictures, 'selecting when there is no current picture' do

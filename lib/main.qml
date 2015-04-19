@@ -39,14 +39,9 @@ ApplicationWindow {
 
     function moveTo(mover) {
         mover()
-        var current = currentPicture.current_picture()
-        currentPictureImage.source = current
+        currentPictureImage.source = currentPicture.current_picture()
         updateButtons()
-        var selectionIndex = selection.get_selection_index(current)
-        if (selectionIndex >= 0) {
-            selectedPicturesView.positionViewAtIndex(selectionIndex,
-                                                     ListView.Center)
-        }
+        updateSelectedPictureView()
     }
 
     function updateButtons() {
@@ -74,13 +69,22 @@ ApplicationWindow {
 
         if (select) {
             selection.select_current()
-            selectedPicturesView.positionViewAtEnd()
+            updateSelectedPictureView()
         }
         else {
             selection.remove_current()
         }
         updateSelectionButtonText()
         updateCopyButton()
+    }
+
+    function updateSelectedPictureView() {
+        var current = currentPicture.current_picture()
+        var selectionIndex = selection.get_selection_index(current)
+        if (selectionIndex >= 0) {
+            selectedPicturesView.positionViewAtIndex(selectionIndex,
+                                                     ListView.Center)
+        }
     }
 
     function updateSelectionButtonText() {

@@ -10,8 +10,8 @@ class SelectedPictures
 
   def select_current
     return unless @source.current_picture
-    return if find_picture @source.current_picture
-    @model << { picturePath: @source.current_picture }
+    index = find_insertion_index @source.current_picture
+    @model.insert(index, picturePath: @source.current_picture) if index
   end
 
   def remove_current
@@ -38,5 +38,13 @@ class SelectedPictures
     @model.find_index do |i|
       i[:picturePath] == to_find
     end
+  end
+
+  def find_insertion_index(new_picture)
+    return 0 if @model.count == 0
+    index = @model.find_index { |p| new_picture <= p[:picturePath] }
+    return @model.count unless index
+    return nil if @model[index][:picturePath] == new_picture
+    index
   end
 end
