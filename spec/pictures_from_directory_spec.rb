@@ -66,6 +66,11 @@ RSpec.describe PicturesFromDirectory, 'empty directory' do
     @pictures.last_picture
     expect(@pictures.current_picture).to eq nil
   end
+
+  it 'should do nothing when moving specific picture' do
+    @pictures.to_picture 'not_there.jpg'
+    expect(@pictures.current_picture).to eq nil
+  end
 end
 
 RSpec.describe PicturesFromDirectory, 'directory without pictures' do
@@ -93,6 +98,11 @@ RSpec.describe PicturesFromDirectory, 'directory without pictures' do
 
   it 'should do nothing when moving to last picture' do
     @pictures.last_picture
+    expect(@pictures.current_picture).to eq nil
+  end
+
+  it 'should do nothing when moving specific picture' do
+    @pictures.to_picture 'not_there.jpg'
     expect(@pictures.current_picture).to eq nil
   end
 end
@@ -132,6 +142,16 @@ RSpec.describe PicturesFromDirectory, 'directory with one picture' do
 
   it 'should do nothing when moving to last picture' do
     @pictures.last_picture
+    expect(@pictures.current_picture).to match(/file.jpg/)
+  end
+
+  it 'should do nothing when moving to same picture' do
+    @pictures.to_picture 'file.jpg'
+    expect(@pictures.current_picture).to match(/file.jpg/)
+  end
+
+  it 'should do nothing when moving to unexisting picture' do
+    @pictures.to_picture 'not_there.jpg'
     expect(@pictures.current_picture).to match(/file.jpg/)
   end
 end
@@ -201,6 +221,16 @@ RSpec.describe PicturesFromDirectory, 'directory with several pictures' do
     5.times { @pictures.next_picture }
     @pictures.last_picture
     expect(@pictures.current_picture).to match(/file9.jpg/)
+  end
+
+  it 'should allow moving to specific picture' do
+    @pictures.to_picture 'file5.jpg'
+    expect(@pictures.current_picture).to match(/file5.jpg/)
+  end
+
+  it 'should do nothing when moving to unexisting picture' do
+    @pictures.to_picture 'not_there.jpg'
+    expect(@pictures.current_picture).to match(/file1.jpg/)
   end
 end
 

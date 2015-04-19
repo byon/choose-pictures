@@ -40,6 +40,10 @@ class CurrentPicture
     @pictures.last_picture
   end
 
+  def move_to_picture(picture)
+    @pictures.to_picture picture
+  end
+
   # Temporarily disabling a few style warnings from Rubocop. The
   # normal method names for getters (e.g., previous? and next?) are
   # not valid code in QML.

@@ -37,6 +37,11 @@ ApplicationWindow {
         moveTo(currentPicture.move_to_last)
     }
 
+    function moveToPicture(picturePath) {
+        var mover = function() {currentPicture.move_to_picture(picturePath)};
+        moveTo(mover)
+    }
+
     function moveTo(mover) {
         mover()
         currentPictureImage.source = currentPicture.current_picture()
@@ -279,11 +284,19 @@ ApplicationWindow {
                     id: selectedPicturesView
                     spacing: 5
                     model: selection.model
-                    delegate: Image {
-                        source: picturePath
-                        sourceSize.width: 256
-                        sourceSize.height: 256
-                        fillMode: Image.PreserveAspectFit
+                    delegate: MouseArea {
+
+                        width: selectedPicture.paintedWidth
+                        height: selectedPicture.paintedHeight
+                        onClicked: mainWindow.moveToPicture(picturePath)
+
+                        Image {
+                            id: selectedPicture
+                            source: picturePath
+                            sourceSize.width: 256
+                            sourceSize.height: 256
+                            fillMode: Image.PreserveAspectFit
+                        }
                     }
                 }
             }

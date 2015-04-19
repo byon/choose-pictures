@@ -36,6 +36,11 @@ class PicturesFromDirectory
     @current > 0
   end
 
+  def to_picture(picture)
+    index = @pictures.index picture
+    @current = index ? index : @current
+  end
+
   def next?
     @current + 1 < @pictures.length
   end
