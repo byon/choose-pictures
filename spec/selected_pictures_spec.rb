@@ -16,6 +16,10 @@ RSpec.describe SelectedPictures, 'construction' do
   it 'should set selection to empty' do
     expect(@selected.selection?).to eq []
   end
+
+  it 'should set index to invalid' do
+    expect(@selected.index?('not there')).to eq(-1)
+  end
 end
 
 RSpec.describe SelectedPictures, 'selecting current picture' do
@@ -36,6 +40,11 @@ RSpec.describe SelectedPictures, 'selecting current picture' do
   it 'should be idempotent' do
     10.times { @selected.select_current }
     expect(@model).to eq [{ picturePath: 'current' }]
+  end
+
+  it 'should allow asking for index' do
+    @selected.select_current
+    expect(@selected.index?('current')).to eq(0)
   end
 end
 
@@ -59,6 +68,11 @@ RSpec.describe SelectedPictures, 'removing the only selection' do
   it 'should remove it from selection' do
     @selected.remove_current
     expect(@selected.selection?).to eq []
+  end
+
+  it 'should remove it from index query ' do
+    @selected.remove_current
+    expect(@selected.index?('current')).to eq(-1)
   end
 
   it 'should remove it from the model' do

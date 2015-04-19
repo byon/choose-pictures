@@ -27,6 +27,11 @@ class SelectedPictures
     @model.map { |s| s[:picturePath] }
   end
 
+  def index?(to_find)
+    index = find_picture to_find
+    index ? index : -1
+  end
+
   private
 
   def find_picture(to_find)

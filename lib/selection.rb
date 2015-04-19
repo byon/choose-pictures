@@ -29,6 +29,10 @@ class Selection
     @selected_pictures.selected?(to_check)
   end
 
+  def get_selection_index(image)
+    @selected_pictures.index?(image)
+  end
+
   def get_selected
     @selected_pictures.selection?
   end

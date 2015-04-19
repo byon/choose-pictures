@@ -39,8 +39,14 @@ ApplicationWindow {
 
     function moveTo(mover) {
         mover()
-        currentPictureImage.source = currentPicture.current_picture()
+        var current = currentPicture.current_picture()
+        currentPictureImage.source = current
         updateButtons()
+        var selectionIndex = selection.get_selection_index(current)
+        if (selectionIndex >= 0) {
+            selectedPicturesView.positionViewAtIndex(selectionIndex,
+                                                     ListView.Center)
+        }
     }
 
     function updateButtons() {
